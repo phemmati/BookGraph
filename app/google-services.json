@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "181920479369",
+    "firebase_url": "https://bookgraph-4996b.firebaseio.com",
+    "project_id": "bookgraph-4996b",
+    "storage_bucket": "bookgraph-4996b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181920479369:android:071eb3d405877b9700ae58",
+        "android_client_info": {
+          "package_name": "com.example.bookgraph"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "181920479369-vlamhr74od0jhbr5ufa7bv6e5cne60q1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bookgraph",
+            "certificate_hash": "aa35eacbc6f31b86671004e744938b23df9e0701"
+          }
+        },
+        {
+          "client_id": "181920479369-kgr6csod5rb6nfnsupiospu7t94tiq0s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAawIGyEYiRQL4neWkuNOJ8OOlhZxd8Yvc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "181920479369-kgr6csod5rb6nfnsupiospu7t94tiq0s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
