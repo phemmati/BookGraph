@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -44,6 +45,23 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if(currentUser == null){
+            sendUsertoMainActivity();
+        }
+    }
+
+    private void sendUsertoMainActivity() {
+        Intent mainIntent = new Intent(RegisterActivity.this,MainActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(mainIntent);
+        finish();
+    }
+
     private void createNewAccount() {
         String email = userEmail.getText().toString();
         String password = userPassword.getText().toString();
@@ -52,13 +70,13 @@ public class RegisterActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(email)){
             Toast.makeText(this,"Please provide your email address.",Toast.LENGTH_LONG).show();
         }
-        else if(TextUtils.isEmpty(password)){
+        if(TextUtils.isEmpty(password)){
             Toast.makeText(this,"Please provide a password",Toast.LENGTH_LONG).show();
         }
-        else if(TextUtils.isEmpty(confirmPassword)){
+        if(TextUtils.isEmpty(confirmPassword)){
             Toast.makeText(this,"Please confirm your password",Toast.LENGTH_LONG).show();
         }
-        else if (!password .equals(confirmPassword) ){
+        if (!password .equals(confirmPassword) ){
             Toast.makeText(this,"Your passwords do not match.",Toast.LENGTH_LONG).show();
 
         }
