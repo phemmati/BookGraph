@@ -14,6 +14,7 @@
         android:id="@+id/click_post_image"
         android:layout_width="wrap_content"
         android:layout_height="300dp"
+        android:scaleType="centerInside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/select_image" />
@@ -23,12 +24,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="352dp"
+        android:background="@drawable/input"
         android:ems="10"
         android:gravity="start|top"
         android:hint="Post Description"
-        android:background="@drawable/input"
         android:inputType="textMultiLine"
         android:textColor="#FFFFFF"
+        android:textColorLink="#0E0E0E"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="-16dp" />
 
