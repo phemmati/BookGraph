@@ -226,6 +226,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(newPostIntent);
     }
 
+    private void sendUserToFindFriendsActivity() {
+        Intent findFriendsIntent = new Intent(MainActivity.this,FindFriendsActivity.class);
+        startActivity(findFriendsIntent);
+    }
+
 
     @Override
     protected void onStart() {
@@ -317,7 +322,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.nav_find_friends:
-                Toast.makeText(this,"fine friends",Toast.LENGTH_LONG).show();
+                sendUserToFindFriendsActivity();
                 break;
 
             case R.id.nav_messages:

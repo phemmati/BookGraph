@@ -67,11 +67,11 @@ public class PostActivity extends AppCompatActivity {
         updatePostButton = (Button) findViewById(R.id.update_post_button);
         postDescription = (EditText) findViewById(R.id.post_description);
         selecPostButton = (ImageButton) findViewById(R.id.select_post_image);
-        mToolbar = (Toolbar) findViewById(R.id.update_post_page_toolbar);
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         postsRef = FirebaseDatabase.getInstance().getReference().child("Posts");
         postsImageRef = FirebaseStorage.getInstance().getReference();
         loadingBar = new ProgressDialog(this);
+        mToolbar = (Toolbar) findViewById(R.id.update_post_page_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
