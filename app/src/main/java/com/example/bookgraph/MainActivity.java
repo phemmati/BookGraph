@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private CircleImageView navProfileImage;
     private TextView navProfileUserName;
     private String currentUserId;
+    private ImageButton addNewPostButton;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -61,9 +63,10 @@ public class MainActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        View nacView = navigationView.inflateHeaderView(R.layout.navigation_header);
-        navProfileImage = (CircleImageView) nacView.findViewById(R.id.setup_profile_image);
-        navProfileUserName = (TextView)nacView.findViewById(R.id.nav_user_full_name);
+        View navView = navigationView.inflateHeaderView(R.layout.navigation_header);
+        navProfileImage = (CircleImageView) navView.findViewById(R.id.nav_profile_image);
+        navProfileUserName = (TextView)navView.findViewById(R.id.nav_user_full_name);
+        addNewPostButton = (ImageButton) findViewById(R.id.add_new_post_button);
 
         usersRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -75,10 +78,11 @@ public class MainActivity extends AppCompatActivity {
                         String fullname = dataSnapshot.child("fullname").getValue().toString();
                         navProfileUserName.setText(fullname);
                     }
-                    if(dataSnapshot.hasChild("prifileimage")){
+                    if(dataSnapshot.hasChild("profileimage")){
 
-                        String profileimage = dataSnapshot.child("profileimage").getValue().toString();
-                        Picasso.get().load(profileimage).placeholder(R.drawable.profile).into(navProfileImage);
+                        String image = dataSnapshot.child("profileimage").getValue().toString();
+                        Picasso.get().load(image).placeholder(R.drawable.profile).into(navProfileImage);
+
                     }
                     else{
                         Toast.makeText(MainActivity.this,"This profile does not exist.",Toast.LENGTH_LONG).show();
@@ -99,6 +103,18 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        addNewPostButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendUsertoPostActivity();
+            }
+        });
+    }
+
+    private void sendUsertoPostActivity() {
+        Intent newPostIntent = new Intent(MainActivity.this,PostActivity.class);
+        startActivity(newPostIntent);
     }
 
 
@@ -162,6 +178,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void userMenuSelector(MenuItem item){
         switch ((item.getItemId())){
+
+            case R.id.nav_post:
+                sendUsertoPostActivity();
+                break;
+
             case R.id.nav_profile:
                 Toast.makeText(this,"profile",Toast.LENGTH_LONG).show();
                 break;
