@@ -280,6 +280,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(settingIntent);
     }
 
+    private void sendUserToProfileActivity() {
+
+        Intent profileIntent = new Intent(MainActivity.this,ProfileActivity.class);
+        startActivity(profileIntent);
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -299,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.nav_profile:
-                Toast.makeText(this,"profile",Toast.LENGTH_LONG).show();
+                sendUserToProfileActivity();
                 break;
 
             case R.id.nav_home:

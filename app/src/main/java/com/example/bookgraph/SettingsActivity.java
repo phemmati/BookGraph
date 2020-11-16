@@ -4,20 +4,36 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -30,6 +46,11 @@ public class SettingsActivity extends AppCompatActivity {
     private DatabaseReference settingRef;
     private FirebaseAuth mAuth;
     private String currentUserId;
+    private ProgressDialog loadingBar;
+    final static int gallery_pick = 1;
+    private StorageReference userProfileImageRef;
+    private String current_user_id;
+    private DatabaseReference usersRef;
 
 
 
@@ -59,7 +80,9 @@ public class SettingsActivity extends AppCompatActivity {
         userRelation = (EditText) findViewById(R.id.settings_relationship);
         updateAccountButton = (Button) findViewById(R.id.update_account_settings_button);
         userProfImage = (CircleImageView) findViewById(R.id.settings_profile_image);
-
+        loadingBar = new ProgressDialog(this);
+        userProfileImageRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
+        usersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId);
 
 
         settingRef.addValueEventListener(new ValueEventListener() {
@@ -92,5 +115,165 @@ public class SettingsActivity extends AppCompatActivity {
 
             }
         });
+
+        updateAccountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                validateAccountInfo();
+            }
+        });
+
+        userProfImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent galleryIntent = new Intent();
+                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent,gallery_pick);
+            }
+        });
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        // some conditions for the picture
+        if(requestCode == gallery_pick && resultCode==RESULT_OK && data!=null)
+        {
+            Uri ImageUri = data.getData();
+            // crop the image
+            CropImage.activity(ImageUri)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(1, 1)
+                    .start(this);
+        }
+        // Get the cropped image
+        if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
+        {       // store the cropped image into result
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if(resultCode == RESULT_OK)
+            {
+                loadingBar.setTitle("Updating profile picture");
+                loadingBar.setMessage("Please wait...");
+                loadingBar.show();
+                loadingBar.setCanceledOnTouchOutside(true);
+
+                Uri resultUri = result.getUri();
+
+                final StorageReference filePath = userProfileImageRef.child(current_user_id + ".jpg");
+
+                filePath.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                final String downloadUrl = uri.toString();
+                                usersRef.child("profileimage").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            Intent selfIntent = new Intent(SettingsActivity.this, SettingsActivity.class);
+                                            startActivity(selfIntent);
+                                            Toast.makeText(SettingsActivity.this, "Image uploaded...", Toast.LENGTH_SHORT).show();
+                                            loadingBar.dismiss();
+                                        }
+                                        else {
+                                            String message = task.getException().getMessage();
+                                            Toast.makeText(SettingsActivity.this, "Error:" + message, Toast.LENGTH_SHORT).show();
+                                            loadingBar.dismiss();
+                                        }
+                                    }
+                                });
+                            }
+
+                        });
+
+                    }
+
+                });
+            }
+            else
+            {
+                Toast.makeText(this, "Error Occurred: Image can not be cropped. Try Again.", Toast.LENGTH_SHORT).show();
+                loadingBar.dismiss();
+            }
+        }
+    }
+
+    private void validateAccountInfo() {
+        String username = userName.getText().toString();
+        String fullname = userFullName.getText().toString();
+        String status = userStatus.getText().toString();
+        String country = userCountry.getText().toString();
+        String DOB = userDOB.getText().toString();
+        String relationship = userRelation.getText().toString();
+        String gender = userGender.getText().toString();
+
+        if(TextUtils.isEmpty(username)){
+            Toast.makeText(this,"Please provide a username.",Toast.LENGTH_LONG).show();
+        }
+        else if(TextUtils.isEmpty(fullname)){
+            Toast.makeText(this,"Please provide your name.",Toast.LENGTH_LONG).show();
+        }
+        else if(TextUtils.isEmpty(status)){
+            Toast.makeText(this,"Please provide your account status.",Toast.LENGTH_LONG).show();
+        }
+        else if(TextUtils.isEmpty(country)){
+            Toast.makeText(this,"Please provide your country.",Toast.LENGTH_LONG).show();
+        }
+        else if(TextUtils.isEmpty(DOB)){
+            Toast.makeText(this,"Please provide your date of birth.",Toast.LENGTH_LONG).show();
+        }
+        else if(TextUtils.isEmpty(relationship)){
+            Toast.makeText(this,"Please provide your relationship status.",Toast.LENGTH_LONG).show();
+        }
+        else if(TextUtils.isEmpty(gender)){
+            Toast.makeText(this,"Please provide your gender.",Toast.LENGTH_LONG).show();
+        }
+        else{
+
+            loadingBar.setTitle("Updating account information.");
+            loadingBar.setMessage("Please wait...");
+            loadingBar.show();
+            loadingBar.setCanceledOnTouchOutside(true);
+            updateAccountInformation(username,fullname,status,DOB,country,relationship,gender);
+        }
+    }
+
+    private void updateAccountInformation(String username, String fullname, String status, String dob, String country, String relationship, String gender) {
+        HashMap userMap = new HashMap();
+        userMap.put("username",username);
+        userMap.put("fullname",fullname);
+        userMap.put("status",status);
+        userMap.put("dob",dob);
+        userMap.put("relationstatus",relationship);
+        userMap.put("country",country);
+        userMap.put("gender",gender);
+
+        settingRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if(task.isSuccessful()){
+                    sendUserToMainActivity();
+                    Toast.makeText(SettingsActivity.this,"Account setting updated successfully",Toast.LENGTH_LONG).show();
+                    loadingBar.dismiss();
+                }
+                else{
+                    Toast.makeText(SettingsActivity.this,"An error occurred, please try later.",Toast.LENGTH_LONG).show();
+                    loadingBar.dismiss();
+                }
+            }
+        });
+    }
+
+    private void sendUserToMainActivity() {
+        Intent mainIntent = new Intent(SettingsActivity.this,MainActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(mainIntent);
+        finish();
     }
 }
