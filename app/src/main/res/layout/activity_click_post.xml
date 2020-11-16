@@ -26,6 +26,7 @@
         android:ems="10"
         android:gravity="start|top"
         android:hint="Post Description"
+        android:background="@drawable/input"
         android:inputType="textMultiLine"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
