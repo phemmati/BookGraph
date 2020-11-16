@@ -274,6 +274,12 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    private void sendUserToSettingsActivity() {
+
+        Intent settingIntent = new Intent(MainActivity.this,SettingsActivity.class);
+        startActivity(settingIntent);
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -313,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.nav_settings:
-                Toast.makeText(this,"settings",Toast.LENGTH_LONG).show();
+                sendUserToSettingsActivity();
                 break;
 
             case R.id.nav_Logout:

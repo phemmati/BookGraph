@@ -196,6 +196,7 @@ public class SetupActivity extends AppCompatActivity {
 
             HashMap userMap = new HashMap();
             userMap.put("username",username);
+            userMap.put("country",country);
             userMap.put("fullname",fullname);
             userMap.put("status","");
             userMap.put("gender","");
