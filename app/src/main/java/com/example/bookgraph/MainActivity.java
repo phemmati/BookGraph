@@ -420,7 +420,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.nav_messages:
-                Toast.makeText(this,"messages",Toast.LENGTH_LONG).show();
+                sendUserToFriendsActivity();
                 break;
 
             case R.id.nav_settings:
