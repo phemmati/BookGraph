@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private Button loginButton;
     private EditText userEmail, userPassword;
-    private TextView needNewAccountLink;
+    private TextView needNewAccountLink,forgetPasswordLink;
     private ProgressDialog loadingBar;
     private FirebaseAuth mAuth;
     private ImageView googleSignInButton;
@@ -50,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         needNewAccountLink = (TextView) findViewById(R.id.register_account_link);
+        forgetPasswordLink = (TextView) findViewById(R.id.forget_password_link);
         userEmail = (EditText) findViewById(R.id.login_email);
         userPassword = (EditText) findViewById(R.id.login_password);
         loginButton = (Button) findViewById(R.id.login_button);
@@ -59,12 +60,22 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+
         needNewAccountLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendUserToRegisterActivity();
             }
         });
+
+
+        forgetPasswordLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this,ResetPasswordActivity.class));
+            }
+        });
+
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
