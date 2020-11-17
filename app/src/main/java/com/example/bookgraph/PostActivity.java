@@ -55,6 +55,7 @@ public class PostActivity extends AppCompatActivity {
     private String saveCurrentDate, saveCurrentTime,postRandomName,current_user_id;
     private String downloadUrl;
     private ProgressDialog loadingBar;
+    private long countPosts = 0;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -152,6 +153,23 @@ public class PostActivity extends AppCompatActivity {
     }
 
     private void SavingPostInformationToDatabase() {
+
+        postsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    countPosts = snapshot.getChildrenCount();
+                }
+                else{
+                    countPosts = 0;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         usersRef.child(current_user_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
@@ -167,6 +185,7 @@ public class PostActivity extends AppCompatActivity {
                     postsMap.put("time", saveCurrentTime);
                     postsMap.put("description", description);
                     postsMap.put("postimage", downloadUrl);
+                    postsMap.put("counter",countPosts);
                     postsMap.put("profileimage", userProfileImage);
                     postsMap.put("fullname", userFullName);
                     postsRef.child(current_user_id + postRandomName).updateChildren(postsMap)

@@ -110,6 +110,7 @@ public class ClickPostActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 clickPostRef.child("description").setValue(inputField.getText().toString());
                 Toast.makeText(ClickPostActivity.this,"Post has been updated.",Toast.LENGTH_LONG).show();
+                sendUserToMainActivity();
             }
         });
 

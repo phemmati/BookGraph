@@ -32,6 +32,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -47,10 +48,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView postList;
     private Toolbar mtoolBar;
     Boolean likeChecker = false;
-
     private FirebaseAuth mAuth;
     private DatabaseReference usersRef,postsRef,likesRef;
-
     private CircleImageView navProfileImage;
     private TextView navProfileUserName;
     private String currentUserId;
@@ -62,35 +61,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAuth = FirebaseAuth.getInstance();
-        postsRef = FirebaseDatabase.getInstance().getReference().child("Posts");
-        usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        likesRef = FirebaseDatabase.getInstance().getReference().child("Likes");
-
-        currentUserId = mAuth.getCurrentUser().getUid();
-
-        mtoolBar = (Toolbar) findViewById(R.id.main_page_toolbar);
-        setSupportActionBar(mtoolBar);
-        getSupportActionBar().setTitle("Home");
-
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawable_layout);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this,drawerLayout,R.string.drawer_open,R.string.drawer_close);
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        postList = (RecyclerView) findViewById(R.id.all_users_post_list);
-        postList.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(true);
-        postList.setLayoutManager(linearLayoutManager);
-
-
-        View navView = navigationView.inflateHeaderView(R.layout.navigation_header);
-        navProfileImage = (CircleImageView) navView.findViewById(R.id.nav_profile_image);
-        navProfileUserName = (TextView)navView.findViewById(R.id.nav_user_full_name);
-        addNewPostButton = (ImageButton) findViewById(R.id.add_new_post_button);
+        initializeFields();
 
         usersRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -139,11 +110,42 @@ public class MainActivity extends AppCompatActivity {
         displayAllUsersPost();
     }
 
+    private void initializeFields() {
+
+        mAuth = FirebaseAuth.getInstance();
+        postsRef = FirebaseDatabase.getInstance().getReference().child("Posts");
+        usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        likesRef = FirebaseDatabase.getInstance().getReference().child("Likes");
+        currentUserId = mAuth.getCurrentUser().getUid();
+        mtoolBar = (Toolbar) findViewById(R.id.main_page_toolbar);
+        setSupportActionBar(mtoolBar);
+        getSupportActionBar().setTitle("Home");
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawable_layout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this,drawerLayout,R.string.drawer_open,R.string.drawer_close);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        postList = (RecyclerView) findViewById(R.id.all_users_post_list);
+        postList.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        postList.setLayoutManager(linearLayoutManager);
+        View navView = navigationView.inflateHeaderView(R.layout.navigation_header);
+        navProfileImage = (CircleImageView) navView.findViewById(R.id.nav_profile_image);
+        navProfileUserName = (TextView)navView.findViewById(R.id.nav_user_full_name);
+        addNewPostButton = (ImageButton) findViewById(R.id.add_new_post_button);
+
+    }
+
     private void displayAllUsersPost() {
+
+        Query sortPostInDescending = postsRef.orderByChild("counter");
 
             FirebaseRecyclerOptions<Posts> options =
                     new FirebaseRecyclerOptions.Builder<Posts>()
-                            .setQuery(postsRef, Posts.class)
+                            .setQuery(sortPostInDescending, Posts.class)
                             .build();
 
             FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Posts, postViewHolder>(options) {
