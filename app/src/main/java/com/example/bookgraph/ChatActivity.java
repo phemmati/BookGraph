@@ -48,9 +48,9 @@ public class ChatActivity extends AppCompatActivity {
     private EditText userMessageInput;
     private RecyclerView userMessagesList;
     private String messageReceiverId, messageReceiverName,messageSenderId,saveCurrentDate,saveCurrentTime;
-    private TextView receiverName;
+    private TextView receiverName,userLastSeen;
     private CircleImageView receiverProfileImage;
-    private DatabaseReference rootRef;
+    private DatabaseReference rootRef,usersRef;
     private FirebaseAuth mAuth;
     private final List<Messages> messagesList = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
@@ -111,6 +111,9 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void sendMessage() {
+
+        updateUserStatus("online");
+
         String messageText = userMessageInput.getText().toString();
         if(TextUtils.isEmpty(messageText)){
 
@@ -167,6 +170,25 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+    public void updateUserStatus(String state){
+        String saveCurrentDate, saveCurrentTime;
+        Calendar calForDate = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd,yyyy");
+        saveCurrentDate = currentDate.format(calForDate.getTime());
+
+        Calendar calForTime = Calendar.getInstance();
+        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm:ss");
+        saveCurrentTime = currentDate.format(calForDate.getTime());
+
+        Map currentStateMap = new HashMap<>();
+        currentStateMap.put("time",saveCurrentTime);
+        currentStateMap.put("date",saveCurrentDate);
+        currentStateMap.put("type",state);
+
+        usersRef.child(messageSenderId).child("userState").updateChildren(currentStateMap);
+
+    }
+
     private void displayReceiverInfo() {
 
         receiverName.setText(messageReceiverName);
@@ -175,6 +197,16 @@ public class ChatActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
                     final String profileImage = snapshot.child("profileimage").getValue().toString();
+                    final String type = snapshot.child("userState").child("type").getValue().toString();
+                    final String lastDate = snapshot.child("userState").child("date").getValue().toString();
+                    final String lastTime = snapshot.child("userState").child("time").getValue().toString();
+
+                    if(type.equals("online")){
+                        userLastSeen.setText("online");
+                    }
+                    else{
+                        userLastSeen.setText("last seen: " + lastTime + " " + lastDate);
+                    }
                     Picasso.get().load(profileImage).placeholder(R.drawable.profile).into(receiverProfileImage);
                 }
             }
@@ -207,6 +239,7 @@ public class ChatActivity extends AppCompatActivity {
         messageReceiverName = getIntent().getExtras().get("userName").toString();
         receiverName = (TextView) findViewById(R.id.custom_profile_name);
         receiverProfileImage = (CircleImageView) findViewById(R.id.custom_profile_image);
+        userLastSeen = (TextView) findViewById(R.id.custom_user_last_seen);
 
         messagesAdapter = new MessagesAdapter(messagesList);
         userMessagesList = (RecyclerView) findViewById(R.id.messages_list_users);
@@ -216,10 +249,7 @@ public class ChatActivity extends AppCompatActivity {
         userMessagesList.setLayoutManager(linearLayoutManager);
         userMessagesList.setAdapter(messagesAdapter);
         rootRef = FirebaseDatabase.getInstance().getReference();
-
-
-
-
+        usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
 
     }

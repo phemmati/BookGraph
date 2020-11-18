@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -23,6 +24,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -50,6 +56,46 @@ public class FriendsActivity extends AppCompatActivity {
         myFriendList.setLayoutManager(linearLayoutManager);
         
         displayAllFriends();
+
+    }
+
+    public void updateUserStatus(String state){
+        String saveCurrentDate, saveCurrentTime;
+        Calendar calForDate = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd,yyyy");
+        saveCurrentDate = currentDate.format(calForDate.getTime());
+
+        Calendar calForTime = Calendar.getInstance();
+        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm:ss");
+        saveCurrentTime = currentDate.format(calForDate.getTime());
+
+        Map currentStateMap = new HashMap<>();
+        currentStateMap.put("time",saveCurrentTime);
+        currentStateMap.put("date",saveCurrentDate);
+        currentStateMap.put("type",state);
+
+        usersRef.child(onlineUserId).child("userState").updateChildren(currentStateMap);
+
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        updateUserStatus("online");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        updateUserStatus("offline");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        updateUserStatus("offline");
     }
 
     private void displayAllFriends() {
@@ -79,9 +125,21 @@ public class FriendsActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()){
 
+
                             final String userName = snapshot.child("fullname").getValue().toString();
                             final String profileImage = snapshot.child("profileimage").getValue().toString();
+                            final String type;
 
+                            if(snapshot.hasChild("userState")){
+                                type = snapshot.child("userState").child("type").getValue().toString();
+
+                                if(type.equals("online")){
+                                    viewHolder.onlineStatusView.setVisibility(View.VISIBLE);
+                                }
+                                else{
+                                    viewHolder.onlineStatusView.setVisibility(View.INVISIBLE);
+                                }
+                            }
                             viewHolder.setFullname(userName);
                             viewHolder.setProfileimage(profileImage);
                             viewHolder.mView.setOnClickListener(new View.OnClickListener() {
@@ -136,10 +194,12 @@ public class FriendsActivity extends AppCompatActivity {
     public static class friendsViewHolder extends RecyclerView.ViewHolder{
 
         View mView;
+        ImageView onlineStatusView;
 
         public friendsViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
+            onlineStatusView = (ImageView) itemView.findViewById(R.id.all_user_online_icon);
         }
 
         public void setFullname(String fullname)

@@ -38,6 +38,11 @@ import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
@@ -223,6 +228,7 @@ public class MainActivity extends AppCompatActivity {
             };
             adapter.startListening();
             postList.setAdapter(adapter);
+            updateUserStatus("online");
     }
 
 
@@ -396,6 +402,28 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    public void updateUserStatus(String state){
+        String saveCurrentDate, saveCurrentTime;
+        Calendar calForDate = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd,yyyy");
+        saveCurrentDate = currentDate.format(calForDate.getTime());
+
+        Calendar calForTime = Calendar.getInstance();
+        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm:ss");
+        saveCurrentTime = currentDate.format(calForDate.getTime());
+
+        Map currentStateMap = new HashMap<>();
+        currentStateMap.put("time",saveCurrentTime);
+        currentStateMap.put("date",saveCurrentDate);
+        currentStateMap.put("type",state);
+
+        usersRef.child(currentUserId).child("userState").updateChildren(currentStateMap);
+
+
+
+    }
+
     private void userMenuSelector(MenuItem item){
         switch ((item.getItemId())){
 
@@ -428,6 +456,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.nav_Logout:
+                updateUserStatus("offline");
                 mAuth.signOut();
                 sendUsertoLoginActivity();
                 break;

@@ -78,6 +78,7 @@
         android:layout_height="82dp"
         android:layout_marginLeft="270dp"
         android:layout_marginTop="580dp"
+        android:visibility="invisible"
         android:src="@drawable/facebook" />
 
     <ImageView
@@ -86,6 +87,7 @@
         android:layout_height="101dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="570dp"
+        android:visibility="invisible"
         android:src="@drawable/twitter" />
 
     <ImageView
