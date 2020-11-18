@@ -5,5 +5,7 @@
     <color name="colorAccent">#E9EBEE</color>
     <color name="colorProfile">#3B4041</color>
     <color name="mainBackground">#D7D7D7</color>
+    <color name="senderColor">#A0179E</color>
+
 
 </resources>
