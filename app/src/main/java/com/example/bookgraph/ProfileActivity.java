@@ -3,7 +3,9 @@ package com.example.bookgraph;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,12 +25,11 @@ public class ProfileActivity extends AppCompatActivity {
 
     private TextView userName,userFullName,userStatus,userCountry,userGender,userRelation,userDOB;
     private CircleImageView userProfImage;
-    private DatabaseReference profileUserRef;
+    private DatabaseReference profileUserRef,friendsRef;
     private FirebaseAuth mAuth;
     private String currentUserId;
-
-
-
+    private Button myPosts,myFriends;
+    private int countFriends = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +45,50 @@ public class ProfileActivity extends AppCompatActivity {
         userRelation = (TextView) findViewById(R.id.my_relationship);
         userProfImage = (CircleImageView) findViewById(R.id.my_profile_pic);
 
+        myFriends = (Button) findViewById(R.id.my_friends_button);
+        myPosts = (Button) findViewById(R.id.my_post_button);
         mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getCurrentUser().getUid();
         profileUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId);
+        friendsRef = FirebaseDatabase.getInstance().getReference().child("Friends");
+
+        myFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendUserToFriendsActivity();
+            }
+        });
+
+        myPosts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendUserToMyPostsActivity();
+            }
+        });
+
+
+        friendsRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if(snapshot.exists()){
+                    countFriends = (int) snapshot.getChildrenCount();
+
+                    myFriends.setText(Integer.toString(countFriends) + " Friends");
+                }
+                else{
+                    myFriends.setText("No Friends");
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
         profileUserRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -80,4 +122,15 @@ public class ProfileActivity extends AppCompatActivity {
 
 
     }
+
+    private void sendUserToFriendsActivity() {
+        Intent friendsIntent = new Intent(ProfileActivity.this,FriendsActivity.class);
+        startActivity(friendsIntent);
+    }
+
+    private void sendUserToMyPostsActivity() {
+        Intent friendsIntent = new Intent(ProfileActivity.this,MyPostsActivity.class);
+        startActivity(friendsIntent);
+    }
+
 }
