@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     private ImageView googleSignInButton;
     private static final int RC_SIGN_IN = 1;
     private GoogleApiClient mGoogleSignInClient;
+    private boolean emailAddressChecker;
     private static final String TAG = "LoginActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,8 +200,8 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
-                        sendUserToMainActivity();
-                        Toast.makeText(LoginActivity.this,"You are logged in successfully.",Toast.LENGTH_LONG).show();
+
+                        verifyEmailAddress();
                         loadingBar.dismiss();
                     }
                     else{
@@ -225,5 +226,21 @@ public class LoginActivity extends AppCompatActivity {
         Intent registerIntent = new Intent(LoginActivity.this,RegisterActivity.class);
         startActivity(registerIntent);
 
+    }
+
+    private void verifyEmailAddress(){
+        FirebaseUser user = mAuth.getCurrentUser();
+        emailAddressChecker = user.isEmailVerified();
+
+        if(emailAddressChecker){
+
+
+            sendUserToMainActivity();
+
+        }
+        else{
+            Toast.makeText(this,"Please verify your email address",Toast.LENGTH_LONG).show();
+            mAuth.signOut();
+        }
     }
 }

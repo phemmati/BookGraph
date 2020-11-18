@@ -25,11 +25,11 @@ public class ProfileActivity extends AppCompatActivity {
 
     private TextView userName,userFullName,userStatus,userCountry,userGender,userRelation,userDOB;
     private CircleImageView userProfImage;
-    private DatabaseReference profileUserRef,friendsRef;
+    private DatabaseReference profileUserRef,friendsRef,postRef;
     private FirebaseAuth mAuth;
     private String currentUserId;
     private Button myPosts,myFriends;
-    private int countFriends = 0;
+    private int countFriends = 0,countPost=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
         currentUserId = mAuth.getCurrentUser().getUid();
         profileUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId);
         friendsRef = FirebaseDatabase.getInstance().getReference().child("Friends");
+        postRef = FirebaseDatabase.getInstance().getReference().child("Posts");
 
         myFriends.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +64,29 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sendUserToMyPostsActivity();
+            }
+        });
+
+
+        postRef.child(currentUserId).orderByChild("uid").startAt(currentUserId).endAt(currentUserId + "\uf8ff").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+
+                    countPost= (int) snapshot.getChildrenCount();
+                    myPosts.setText(Integer.toString(countPost)+ " Posts");
+
+                }
+                else{
+
+                    myPosts.setText("0 Post");
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
