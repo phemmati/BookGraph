@@ -113,7 +113,7 @@ public class CommentsActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull CommentsViewHolder commentsViewHolder, int i, @NonNull Comments comments)
             {
-                
+
                 commentsViewHolder.setUsername(comments.getUsername());
                 commentsViewHolder.setComments(comments.getComments());
                 commentsViewHolder.setDate(comments.getDate());

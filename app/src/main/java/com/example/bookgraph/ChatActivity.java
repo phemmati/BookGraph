@@ -188,7 +188,7 @@ public class ChatActivity extends AppCompatActivity {
 
         Calendar calForTime = Calendar.getInstance();
         SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm:ss");
-        saveCurrentTime = currentDate.format(calForDate.getTime());
+        saveCurrentTime = currentTime.format(calForTime.getTime());
 
         Map currentStateMap = new HashMap<>();
         currentStateMap.put("time",saveCurrentTime);
