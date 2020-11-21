@@ -99,6 +99,7 @@ public class CommentsActivity extends AppCompatActivity {
         FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Comments,CommentsViewHolder>(options)
         {
 
+
             @NonNull
             @Override
             public CommentsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
@@ -112,6 +113,7 @@ public class CommentsActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull CommentsViewHolder commentsViewHolder, int i, @NonNull Comments comments)
             {
+                
                 commentsViewHolder.setUsername(comments.getUsername());
                 commentsViewHolder.setComments(comments.getComments());
                 commentsViewHolder.setDate(comments.getDate());
