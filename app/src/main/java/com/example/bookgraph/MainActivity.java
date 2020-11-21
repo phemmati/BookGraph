@@ -461,7 +461,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.nav_home:
-                Toast.makeText(this,"home",Toast.LENGTH_LONG).show();
+                sendUserToProfileActivity();
                 break;
 
             case R.id.nav_friends:
