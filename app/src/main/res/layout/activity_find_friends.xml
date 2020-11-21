@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorProfile"
+    android:background="@drawable/solid"
     tools:context=".FindFriendsActivity">
 
     <include
@@ -26,10 +26,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginLeft="20dp"
-            android:text="Search for people and friends!"
-            android:textColor="@android:color/background_light"
-            android:textStyle="bold"
-            android:textSize="13sp"/>
+            android:textColor="@color/browser_actions_title_color"
+            android:textSize="13sp"
+            android:textStyle="bold" />
         
         <EditText
             android:id="@+id/search_box_input"

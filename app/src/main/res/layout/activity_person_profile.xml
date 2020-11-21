@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorProfile"
+    android:background="@drawable/solid"
     tools:context=".PersonProfileActivity">
 
     <ScrollView
@@ -36,7 +36,7 @@
                 android:layout_marginTop="5dp"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textColor="@android:color/background_light"
+                android:textColor="@android:color/darker_gray"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
 
@@ -48,7 +48,7 @@
                 android:layout_below="@+id/person_full_name"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textColor="@android:color/background_light"
+                android:textColor="@android:color/darker_gray"
                 android:textSize="20sp"/>
 
             <TextView
@@ -72,7 +72,7 @@
                 android:layout_below="@+id/person_profile_status"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textColor="@color/colorAccent"
+                android:textColor="@android:color/darker_gray"
                 android:textSize="22sp"/>
 
             <TextView
@@ -84,7 +84,7 @@
                 android:layout_below="@+id/person_country"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textColor="@color/colorAccent"
+                android:textColor="@android:color/darker_gray"
                 android:textSize="18sp"/>
 
             <TextView
@@ -96,7 +96,7 @@
                 android:layout_below="@+id/person_dob"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textColor="@color/colorAccent"
+                android:textColor="@android:color/darker_gray"
                 android:textSize="18sp"/>
 
             <TextView
@@ -108,7 +108,7 @@
                 android:layout_below="@+id/person_gender"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textColor="@color/colorAccent"
+                android:textColor="@android:color/darker_gray"
                 android:textSize="18sp"/>
 
             <Button
@@ -117,8 +117,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/person_relationship"
                 android:layout_marginTop="45dp"
-                android:background="@color/colorPrimaryDark"
-                android:text="Send Friend Request"
+                android:background="@color/senderColor"
+                android:text="Follow"
                 android:textColor="@android:color/background_light"
                 android:textSize="16sp"
                 android:layout_centerHorizontal="true"/>
@@ -131,7 +131,7 @@
                 android:layout_marginTop="8dp"
                 android:backgroundTint="@color/colorPrimary"
                 android:background="@color/colorPrimaryDark"
-                android:text="Decline Friend Request"
+                android:text="Decline Follow Request"
                 android:textColor="@android:color/background_light"
                 android:textSize="16sp"
                 android:layout_centerHorizontal="true"/>

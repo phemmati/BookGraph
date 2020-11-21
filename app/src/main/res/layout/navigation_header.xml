@@ -26,7 +26,7 @@
         android:layout_marginTop="172dp"
         android:text="username"
         android:textAlignment="center"
-        android:textColor="#FFFFFF"
+        android:textColor="@android:color/black"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

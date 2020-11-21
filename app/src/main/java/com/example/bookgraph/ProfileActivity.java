@@ -21,6 +21,10 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * Handles profile activities
+ */
+
 public class ProfileActivity extends AppCompatActivity {
 
     private TextView userName,userFullName,userStatus,userCountry,userGender,userRelation,userDOB;
@@ -74,12 +78,12 @@ public class ProfileActivity extends AppCompatActivity {
                 if(snapshot.exists()){
 
                     countPost= (int) snapshot.getChildrenCount();
-                    myPosts.setText(Integer.toString(countPost)+ " Posts");
+                    myPosts.setText(Integer.toString(countPost)+ " Book Suggestions");
 
                 }
                 else{
 
-                    myPosts.setText("0 Post");
+                    myPosts.setText("0 Suggestion");
                 }
 
             }
@@ -98,10 +102,10 @@ public class ProfileActivity extends AppCompatActivity {
                 if(snapshot.exists()){
                     countFriends = (int) snapshot.getChildrenCount();
 
-                    myFriends.setText(Integer.toString(countFriends) + " Friends");
+                    myFriends.setText(Integer.toString(countFriends) + " Followers");
                 }
                 else{
-                    myFriends.setText("No Friends");
+                    myFriends.setText("No Follower");
 
                 }
 

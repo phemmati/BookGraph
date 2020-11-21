@@ -34,6 +34,9 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * Handles setup activity
+ */
 public class SetupActivity extends AppCompatActivity {
 
     private EditText userName, fullName, countryName;

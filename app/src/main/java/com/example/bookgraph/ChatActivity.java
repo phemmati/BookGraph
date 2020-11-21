@@ -40,6 +40,10 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * This activity controls the messaging function of the app
+ */
+
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -57,7 +61,10 @@ public class ChatActivity extends AppCompatActivity {
     private MessagesAdapter messagesAdapter;
 
 
-
+    /**
+     * This method invokes whenever this activity is called
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,12 +78,14 @@ public class ChatActivity extends AppCompatActivity {
                 sendMessage();
             }
         });
-
         fetchMessages();
     }
 
-    private void fetchMessages() {
 
+    /**
+     * This method fetches messages from the database
+     */
+    private void fetchMessages() {
         rootRef.child("Messages").child(messageSenderId).child(messageReceiverId).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -110,6 +119,10 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * This method handles the messages that are sent and store them in database
+     */
     private void sendMessage() {
 
         updateUserStatus("online");
@@ -158,18 +171,15 @@ public class ChatActivity extends AppCompatActivity {
                         Toast.makeText(ChatActivity.this,message,Toast.LENGTH_LONG).show();
                         userMessageInput.setText("");
                     }
-
                 }
             });
-
-
-
-
-
-
         }
     }
 
+    /**
+     * This method updates the user status
+     * @param state
+     */
     public void updateUserStatus(String state){
         String saveCurrentDate, saveCurrentTime;
         Calendar calForDate = Calendar.getInstance();
@@ -189,6 +199,9 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method handles the receiver information on top of chat box
+     */
     private void displayReceiverInfo() {
 
         receiverName.setText(messageReceiverName);
@@ -218,6 +231,9 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * This method initializes the parameters of this activity
+     */
     private void initializeFields() {
 
         chatToolbar = (Toolbar) findViewById(R.id.chat_bar_layout);

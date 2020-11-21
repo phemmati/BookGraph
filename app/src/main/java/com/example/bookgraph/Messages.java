@@ -1,5 +1,9 @@
 package com.example.bookgraph;
 
+/**
+ * Model for the messaging function
+ */
+
 public class Messages {
 
     public String data,time,type,message,from;

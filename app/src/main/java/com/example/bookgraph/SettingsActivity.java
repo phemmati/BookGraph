@@ -37,6 +37,9 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * Handles setting activity
+ */
 public class SettingsActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;

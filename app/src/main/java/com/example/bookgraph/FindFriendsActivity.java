@@ -27,6 +27,10 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * This activity handles the search function of the app
+ */
+
 public class FindFriendsActivity extends AppCompatActivity {
 
 
@@ -45,16 +49,13 @@ public class FindFriendsActivity extends AppCompatActivity {
         searchResultList = (RecyclerView) findViewById(R.id.search_result_list);
         searchResultList.setHasFixedSize(true);
         searchResultList.setLayoutManager(new LinearLayoutManager(this));
-
         allUsersDatabaseRef = FirebaseDatabase.getInstance().getReference().child("Users");
-
         searchInputtext = (EditText) findViewById(R.id.search_box_input);
         searchButton = (ImageButton) findViewById(R.id.search_people_button);
-
         mToolbar = (Toolbar) findViewById(R.id.find_friends_appbar_layout);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Find Friends!");
+        getSupportActionBar().setTitle("Find Friends");
 
 
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +67,10 @@ public class FindFriendsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * This method handles the query for finding the username
+     * @param searchBoxInput
+     */
     private void searchPeople(String searchBoxInput) {
 
         Query searchPeopleAndFriendsQuery = allUsersDatabaseRef.orderByChild("fullname")

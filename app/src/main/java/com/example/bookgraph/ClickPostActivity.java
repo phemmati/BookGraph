@@ -24,6 +24,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+/**
+ * This activity handles the creation of each post
+ */
+
 public class ClickPostActivity extends AppCompatActivity {
 
     private ImageView postImage;
@@ -31,8 +35,7 @@ public class ClickPostActivity extends AppCompatActivity {
     private Button deletePostButton,editPostButton;
     private DatabaseReference clickPostRef;
     private FirebaseAuth mAuth;
-
-    private String postKey,currentIserId,databaseUserId,description,image;
+    private String postKey,currentUserId,databaseUserId,description,image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,7 @@ public class ClickPostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_click_post);
 
         mAuth = FirebaseAuth.getInstance();
-        currentIserId = mAuth.getCurrentUser().getUid();
+        currentUserId = mAuth.getCurrentUser().getUid();
         postKey = getIntent().getExtras().get("PostKey").toString();
         clickPostRef = FirebaseDatabase.getInstance().getReference().child("Posts").child(postKey);
 
@@ -63,7 +66,7 @@ public class ClickPostActivity extends AppCompatActivity {
                     postDescription.setText(description);
                     Picasso.get().load(image).into(postImage);
 
-                    if(currentIserId.equals(databaseUserId)){
+                    if(currentUserId.equals(databaseUserId)){
 
                         deletePostButton.setVisibility(View.VISIBLE);
                         editPostButton.setVisibility(View.VISIBLE);
@@ -93,10 +96,12 @@ public class ClickPostActivity extends AppCompatActivity {
                 deleteCurrentPost();
             }
         });
-
-
     }
 
+    /**
+     * This method handles the edition of post
+     * @param description
+     */
     private void editCurrentPost(String description) {
         AlertDialog.Builder builder = new AlertDialog.Builder(ClickPostActivity.this);
         builder.setTitle("Edit Post");
@@ -127,6 +132,9 @@ public class ClickPostActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method handles the deletion of each post
+     */
     private void deleteCurrentPost() {
         clickPostRef.removeValue();
         sendUserToMainActivity();
@@ -134,6 +142,10 @@ public class ClickPostActivity extends AppCompatActivity {
 
     }
 
+
+    /**
+     * This method will redirect user to the main activity
+     */
     private void sendUserToMainActivity() {
         Intent mainIntent = new Intent(ClickPostActivity.this,MainActivity.class);
         mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

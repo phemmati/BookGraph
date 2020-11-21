@@ -32,6 +32,9 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * This activity handles the following activity
+ */
 public class FriendsActivity extends AppCompatActivity {
 
     private RecyclerView myFriendList;
@@ -59,6 +62,10 @@ public class FriendsActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method update the user status
+     * @param state
+     */
     public void updateUserStatus(String state){
         String saveCurrentDate, saveCurrentTime;
         Calendar calForDate = Calendar.getInstance();
@@ -75,9 +82,6 @@ public class FriendsActivity extends AppCompatActivity {
         currentStateMap.put("type",state);
 
         usersRef.child(onlineUserId).child("userState").updateChildren(currentStateMap);
-
-
-
     }
 
     @Override
@@ -98,6 +102,9 @@ public class FriendsActivity extends AppCompatActivity {
         updateUserStatus("offline");
     }
 
+    /**
+     * This method displays all friends
+     */
     private void displayAllFriends() {
 
         FirebaseRecyclerOptions<Friends> options =
@@ -217,7 +224,7 @@ public class FriendsActivity extends AppCompatActivity {
         public void setDate(String date)
         {
             TextView friendsDate = (TextView) mView.findViewById(R.id.all_users_status);
-            friendsDate.setText("Friends Since: " + date);
+            friendsDate.setText("Followers Since: " + date);
         }
     }
 

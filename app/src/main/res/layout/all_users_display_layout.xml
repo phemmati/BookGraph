@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="10dp"
-    android:background="@color/colorProfile"
+    android:background="@android:color/darker_gray"
     >
 
     <de.hdodenhof.circleimageview.CircleImageView

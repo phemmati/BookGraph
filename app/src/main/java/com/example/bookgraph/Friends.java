@@ -1,5 +1,8 @@
 package com.example.bookgraph;
 
+/**
+ * Model for friends activity
+ */
 public class Friends {
 
     public String date;

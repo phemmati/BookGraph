@@ -18,6 +18,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * Handles the register activity
+ */
 public class RegisterActivity extends AppCompatActivity
 {
     private EditText UserEmail, UserPassword, UserConfirmPassword;
@@ -115,13 +118,14 @@ public class RegisterActivity extends AppCompatActivity
                         {
                             if(task.isSuccessful())
                             {
-                                sendEmailVerification();
+
+                                sendUserToSetupActivity();
                                 loadingBar.dismiss();
                             }
                             else
                             {
                                 String message = task.getException().getMessage();
-                                Toast.makeText(RegisterActivity.this, "Error Occured: " + message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "Error Occurred: " + message, Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
                             }
                         }
@@ -134,6 +138,14 @@ public class RegisterActivity extends AppCompatActivity
     private void SendUserToLoginActivity()
     {
         Intent Intent = new Intent(RegisterActivity.this, LoginActivity.class);
+        Intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(Intent);
+        finish();
+    }
+
+    private void sendUserToSetupActivity()
+    {
+        Intent Intent = new Intent(RegisterActivity.this, SetupActivity.class);
         Intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(Intent);
         finish();

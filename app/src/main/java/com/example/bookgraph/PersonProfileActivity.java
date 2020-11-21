@@ -23,6 +23,9 @@ import java.util.Calendar;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * Handles activities on each person profile
+ */
 public class PersonProfileActivity extends AppCompatActivity {
 
     private TextView userName,userFullName,userStatus,userCountry,userGender,userRelation,userDOB;
@@ -116,7 +119,7 @@ public class PersonProfileActivity extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 sendFriendRequestBtn.setEnabled(true);
                                 currentState="not_friends";
-                                sendFriendRequestBtn.setText("Send Friend Request");
+                                sendFriendRequestBtn.setText("Follow");
 
                                 declineFriendRequestBtn.setVisibility(View.INVISIBLE);
                                 declineFriendRequestBtn.setEnabled(false);
@@ -155,7 +158,7 @@ public class PersonProfileActivity extends AppCompatActivity {
                                                     if(task.isSuccessful()){
                                                         sendFriendRequestBtn.setEnabled(true);
                                                         currentState="friends";
-                                                        sendFriendRequestBtn.setText("Unfriend This Person");
+                                                        sendFriendRequestBtn.setText("Unfollow");
 
                                                         declineFriendRequestBtn.setVisibility(View.INVISIBLE);
                                                         declineFriendRequestBtn.setEnabled(false);
@@ -192,7 +195,7 @@ public class PersonProfileActivity extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 sendFriendRequestBtn.setEnabled(true);
                                 currentState="not_friends";
-                                sendFriendRequestBtn.setText("Send Friend Request");
+                                sendFriendRequestBtn.setText("Follow");
 
                                 declineFriendRequestBtn.setVisibility(View.INVISIBLE);
                                 declineFriendRequestBtn.setEnabled(false);
@@ -214,7 +217,7 @@ public class PersonProfileActivity extends AppCompatActivity {
                     String requestType = snapshot.child(receiverUserId).child("request_type").getValue().toString();
                     if(requestType.equals("sent")){
                         currentState = "request_sent";
-                        sendFriendRequestBtn.setText("Cancel friend request");
+                        sendFriendRequestBtn.setText("Cancel request");
 
                         declineFriendRequestBtn.setVisibility(View.INVISIBLE);
                         declineFriendRequestBtn.setEnabled(false);
@@ -222,7 +225,7 @@ public class PersonProfileActivity extends AppCompatActivity {
                     }
                     else if(requestType.equals("received")){
                         currentState = "request_received";
-                        sendFriendRequestBtn.setText("Accept Friend Request");
+                        sendFriendRequestBtn.setText("Accept Request");
 
                         declineFriendRequestBtn.setVisibility(View.VISIBLE);
                         declineFriendRequestBtn.setEnabled(true);
@@ -241,7 +244,7 @@ public class PersonProfileActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if(snapshot.hasChild(receiverUserId)){
                                 currentState = "friends";
-                                sendFriendRequestBtn.setText("Unfriend This Person");
+                                sendFriendRequestBtn.setText("Unfollow");
                                 declineFriendRequestBtn.setVisibility(View.INVISIBLE);
                                 declineFriendRequestBtn.setEnabled(false);
                             }
@@ -275,7 +278,7 @@ public class PersonProfileActivity extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 sendFriendRequestBtn.setEnabled(true);
                                 currentState="request_sent";
-                                sendFriendRequestBtn.setText("Cancel friend request");
+                                sendFriendRequestBtn.setText("Cancel request");
 
                                 declineFriendRequestBtn.setVisibility(View.INVISIBLE);
                                 declineFriendRequestBtn.setEnabled(false);

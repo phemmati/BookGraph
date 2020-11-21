@@ -17,7 +17,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
-
+/**
+ * Handles the reset password activity
+ */
 public class ResetPasswordActivity extends AppCompatActivity {
 
 

@@ -29,7 +29,9 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-
+/**
+ * This activity handles the posts of each person
+ */
 public class MyPostsActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
@@ -69,6 +71,9 @@ public class MyPostsActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Query the database based on userId
+     */
     private void displayMyAllPosts() {
 
         Query myPostQuery = postRef.orderByChild("uid").startAt(currentUserId).endAt(currentUserId + "\uf8ff");

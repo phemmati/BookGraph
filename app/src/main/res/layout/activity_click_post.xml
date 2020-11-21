@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayout3"
@@ -14,6 +14,7 @@
         android:id="@+id/click_post_image"
         android:layout_width="wrap_content"
         android:layout_height="300dp"
+        android:layout_marginTop="180dp"
         android:scaleType="centerInside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,37 +23,36 @@
     <EditText
         android:id="@+id/click_post_description"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="352dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/input"
         android:ems="10"
-        android:gravity="start|top"
+        android:layout_below="@+id/click_post_image"
         android:hint="Post Description"
         android:inputType="textMultiLine"
+        android:textAlignment="center"
         android:textColor="#FFFFFF"
-        android:textColorLink="#0E0E0E"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="-16dp" />
+        android:textColorLink="#0E0E0E" />
 
     <Button
         android:id="@+id/edit_post_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/button"
+        android:background="@color/senderColor"
+        android:layout_marginTop="20dp"
         android:text="Edit Post"
+        android:layout_below="@+id/click_post_description"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/delete_post_button"
-        app:layout_constraintTop_toBottomOf="@+id/post_description"
-        app:layout_constraintVertical_bias="0.906"
-        tools:layout_editor_absoluteX="-195dp" />
+        />
 
     <Button
         android:id="@+id/delete_post_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/button"
+        android:background="@color/senderColor"
+        android:layout_below="@+id/edit_post_button"
+        android:layout_marginTop="20dp"
         android:text="Delete Post"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        />
+</RelativeLayout>

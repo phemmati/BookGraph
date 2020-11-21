@@ -45,6 +45,9 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * Main activity is the home page of the app
+ */
 public class MainActivity extends AppCompatActivity {
 
     private NavigationView navigationView;
@@ -144,6 +147,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Fetches all the posts and display them
+     */
     private void displayAllUsersPost() {
 
         Query sortPostInDescending = postsRef.orderByChild("counter");
@@ -346,6 +352,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Checks if user credential is already in the database
+     */
     private void checkUserExistence() {
         final String current_userId = mAuth.getCurrentUser().getUid();
         usersRef.addValueEventListener(new ValueEventListener() {
@@ -364,6 +373,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Send user to setup activity
+     */
     private void sendUserToSetupActivity() {
         Intent setupIntent = new Intent(MainActivity.this,SetupActivity.class);
         setupIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -371,6 +383,9 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * send user to login activity
+     */
     private void sendUsertoLoginActivity() {
 
         Intent loginIntent = new Intent(MainActivity.this,LoginActivity.class);
@@ -379,12 +394,18 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * send user to setting activity
+     */
     private void sendUserToSettingsActivity() {
 
         Intent settingIntent = new Intent(MainActivity.this,SettingsActivity.class);
         startActivity(settingIntent);
     }
 
+    /**
+     * send user to profile activity
+     */
     private void sendUserToProfileActivity() {
 
         Intent profileIntent = new Intent(MainActivity.this,ProfileActivity.class);
@@ -403,6 +424,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Updates user status
+     * @param state
+     */
     public void updateUserStatus(String state){
         String saveCurrentDate, saveCurrentTime;
         Calendar calForDate = Calendar.getInstance();

@@ -1,5 +1,8 @@
 package com.example.bookgraph;
 
+/**
+ * Model class for the posts
+ */
 public class Posts
 {
     public String uid, time, date, postimage, description, profileimage, fullname;

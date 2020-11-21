@@ -1,5 +1,8 @@
 package com.example.bookgraph;
 
+/**
+ * Model class for finding friends
+ */
 public class FindFriends {
 
     public String profileimage,fullname,status;

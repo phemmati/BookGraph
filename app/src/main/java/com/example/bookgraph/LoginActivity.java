@@ -33,6 +33,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+/**
+ * This activity handles the login function of the app
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private Button loginButton;
@@ -45,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleApiClient mGoogleSignInClient;
     private boolean emailAddressChecker;
     private static final String TAG = "LoginActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -161,6 +165,9 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * This method sends user back login activity
+     */
     private void sendUserToLoginActivity() {
         Intent loginIntent = new Intent(LoginActivity.this,LoginActivity.class);
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -179,6 +186,9 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method invokes firebase auth to login
+     */
     private void allowingUserToLogin() {
         String email = userEmail.getText().toString();
         String password = userPassword.getText().toString();
@@ -201,12 +211,12 @@ public class LoginActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
 
-                        verifyEmailAddress();
+                        sendUserToMainActivity();
                         loadingBar.dismiss();
                     }
                     else{
                         String message = task.getException().getMessage();
-                        Toast.makeText(LoginActivity.this,"Error accrued: " + message,Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this,"Error occurred: " + message,Toast.LENGTH_LONG).show();
                         loadingBar.dismiss();
                     }
                 }
@@ -214,6 +224,9 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Send user to main activity
+     */
     private void sendUserToMainActivity() {
         Intent mainIntent = new Intent(LoginActivity.this,MainActivity.class);
         mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -221,6 +234,9 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Send user to register activity
+     */
     private void sendUserToRegisterActivity() {
 
         Intent registerIntent = new Intent(LoginActivity.this,RegisterActivity.class);
@@ -228,6 +244,11 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+
+
+    /**
+     * Handles the email verification
+     */
     private void verifyEmailAddress(){
         FirebaseUser user = mAuth.getCurrentUser();
         emailAddressChecker = user.isEmailVerified();
